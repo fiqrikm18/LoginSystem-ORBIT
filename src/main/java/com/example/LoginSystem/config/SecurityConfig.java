@@ -34,6 +34,7 @@ public class SecurityConfig {
 				.failureHandler(new PlainTextLoginFailureHandler())
 				.permitAll())
 			.logout((logout) -> logout.permitAll())
+			.csrf((csrf) -> csrf.ignoringRequestMatchers("/register", "/login", "/h2-console/**"))
 			.headers((headers) -> headers.frameOptions((frameOptions) -> frameOptions.sameOrigin()));
 
 		return http.build();

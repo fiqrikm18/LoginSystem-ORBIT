@@ -1,7 +1,6 @@
 package com.example.LoginSystem;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -25,7 +24,6 @@ class AuthIntegrationTests {
 	@Test
 	void registersUserWithFormEncodedEmailAndPassword() throws Exception {
 		mockMvc.perform(post("/register")
-				.with(csrf())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("email", "register@example.com")
 				.param("password", "mypassword"))
@@ -38,7 +36,6 @@ class AuthIntegrationTests {
 		register("duplicate@example.com", "mypassword");
 
 		mockMvc.perform(post("/register")
-				.with(csrf())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("email", "duplicate@example.com")
 				.param("password", "otherpassword"))
@@ -49,7 +46,6 @@ class AuthIntegrationTests {
 	@Test
 	void rejectsInvalidRegistrationInputWithHumanReadableMessage() throws Exception {
 		mockMvc.perform(post("/register")
-				.with(csrf())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("email", "not-an-email")
 				.param("password", ""))
@@ -70,7 +66,6 @@ class AuthIntegrationTests {
 		register("login@example.com", "mypassword");
 
 		mockMvc.perform(post("/login")
-				.with(csrf())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("email", "login@example.com")
 				.param("password", "mypassword"))
@@ -83,7 +78,6 @@ class AuthIntegrationTests {
 		register("invalid-login@example.com", "mypassword");
 
 		mockMvc.perform(post("/login")
-				.with(csrf())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("email", "invalid-login@example.com")
 				.param("password", "wrongpassword"))
@@ -93,7 +87,6 @@ class AuthIntegrationTests {
 
 	private void register(String email, String password) throws Exception {
 		mockMvc.perform(post("/register")
-				.with(csrf())
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("email", email)
 				.param("password", password))
